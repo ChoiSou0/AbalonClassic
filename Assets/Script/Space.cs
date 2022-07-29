@@ -7,6 +7,7 @@ public class Space : MonoBehaviour
     Renderer renderer;
 
     public SpaceState spaceState;
+    public int Num;
 
     private void Start()
     {
@@ -24,7 +25,7 @@ public class Space : MonoBehaviour
                 renderer.material.color = Color.white;
                 break;
             default:
-                renderer.material.color = Color.clear;
+                renderer.material.color = Color.gray;
                 break;
         }
     }

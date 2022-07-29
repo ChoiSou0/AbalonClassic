@@ -33,54 +33,93 @@ public class Space_Mgr : MonoBehaviour
     void Update()
     {
         ClickSpace();
-        MoveSpace();
     }
 
     private void ClickSpace()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (SelectList.Count == 3)
-                return;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit))
             {
                 GameObject Obj = hit.collider.gameObject;
-                SelectList.Add(Obj.GetComponent<Space>());
+
+                switch (Obj.GetComponent<Space>().spaceState)
+                {
+                    // 이동
+                    case SpaceState.none:
+                        switch (SelectList.Count)
+                        {
+                            case 1:
+                                ChangeSpace(SelectList[0], Obj.GetComponent<Space>());
+                                break;
+                            case 2:
+                                switch(Obj.GetComponent<Space>().Num - SelectList[0].Num)
+                                {
+                                    // 우측이동
+                                    case 1:
+                                        ChangeSpace(SelectList[0], Obj.GetComponent<Space>());
+                                        for (int i = 0; i < SpaceList.Count; i++)
+                                        {
+                                            if (SpaceList[i].Num == SelectList[1].Num)
+                                                ChangeSpace(SelectList[1], SpaceList[i + 1]);
+                                        }
+                                        break;
+                                    // 좌측이동
+                                    case -1:
+                                        ChangeSpace(SelectList[0], Obj.GetComponent<Space>());
+                                        for (int i = 0; i < SpaceList.Count; i++)
+                                        {
+                                            if (SpaceList[i].Num == SelectList[1].Num)
+                                                ChangeSpace(SelectList[1], SpaceList[i - 1]);
+                                        }
+                                        break;
+                                    default:
+                                        ChangeSpace(SelectList[0], Obj.GetComponent<Space>());
+                                        ChangeSpace(SelectList[1], SelectList[0]);
+                                        break;
+                                }
+
+                                break;
+                            case 3:
+                                break;
+                        }
+                        SelectList.Clear();
+                        break;
+
+                    // 선택
+                    default:
+                        if (SelectList.Count == 3)
+                            return;
+
+                        SelectList.Add(Obj.GetComponent<Space>());
+
+                        break;
+                }
             }
-            
+
         }
         
     }
 
-    private void MoveSpace()
+    private void Asend()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Vector2 v = Vector2.zero;
-            switch(SelectList.Count)
-            {
-                case 0:
-                    return;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-            }
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                GameObject Obj = hit.collider.gameObject;
-                
-
-            }
-        }
     }
+
+    private void Desend()
+    {
+
+    }
+
+    private void ChangeSpace(Space a, Space b)
+    {
+        b.spaceState = a.spaceState;
+        a.spaceState = SpaceState.none;
+    }
+
 
     private void StartSetting()
     {
@@ -98,6 +137,10 @@ public class Space_Mgr : MonoBehaviour
         {
             SpaceList[i + 13].spaceState = SpaceState.White;
             SpaceList[i + 45].spaceState = SpaceState.Black;
+        }
+        for (int i = 0; i < SpaceList.Count; i++)
+        {
+            SpaceList[i].Num = i;
         }
     }
 }

@@ -56,31 +56,25 @@ public class Space_Mgr : MonoBehaviour
                                 ChangeSpace(SelectList[0], Obj.GetComponent<Space>());
                                 break;
                             case 2:
-                                switch(Obj.GetComponent<Space>().Num - SelectList[0].Num)
+                                if (SelectList[0].Num + 1 == Obj.GetComponent<Space>().Num ||
+                                    SelectList[1].Num + 1 == Obj.GetComponent<Space>().Num)
                                 {
-                                    // 우측이동
-                                    case 1:
-                                        ChangeSpace(SelectList[0], Obj.GetComponent<Space>());
-                                        for (int i = 0; i < SpaceList.Count; i++)
-                                        {
-                                            if (SpaceList[i].Num == SelectList[1].Num)
-                                                ChangeSpace(SelectList[1], SpaceList[i + 1]);
-                                        }
-                                        break;
-                                    // 좌측이동
-                                    case -1:
-                                        ChangeSpace(SelectList[0], Obj.GetComponent<Space>());
-                                        for (int i = 0; i < SpaceList.Count; i++)
-                                        {
-                                            if (SpaceList[i].Num == SelectList[1].Num)
-                                                ChangeSpace(SelectList[1], SpaceList[i - 1]);
-                                        }
-                                        break;
-                                    default:
-                                        ChangeSpace(SelectList[0], Obj.GetComponent<Space>());
-                                        ChangeSpace(SelectList[1], SelectList[0]);
-                                        break;
+                                    ChangeSpace(SelectList[0], );
+                                    ChangeSpace(SelectList[1], );
                                 }
+                                else if (SelectList[0].Num - 1 == Obj.GetComponent<Space>().Num ||
+                                    SelectList[1].Num - 1 == Obj.GetComponent<Space>().Num)
+                                {
+
+                                }
+                                //else if ()
+                                //{
+
+                                //}
+                                //else if ()
+                                //{
+
+                                //}
 
                                 break;
                             case 3:
